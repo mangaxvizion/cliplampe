@@ -29,26 +29,14 @@
   }
 
   /* ---------- HEADER ---------- */
-  header.topbar{
-    background:linear-gradient(90deg,var(--green-800),var(--green-600));
-    color:var(--white);
-    text-align:center;
-    padding:10px 14px;
-    font-size:14px;
-    font-weight:600;
-    letter-spacing:.3px;
-  }
-  header.topbar span{color:var(--lime);}
-
-  /* ---------- LOGO BAR ---------- */
   .logo-bar{
     background:var(--white);
     text-align:center;
-    padding:10px 14px 8px;
+    padding:14px 14px 10px;
   }
   .logo-bar img{
-    height:44px;
-    max-width:80%;
+    height:76px;
+    max-width:92%;
     object-fit:contain;
   }
 
@@ -146,10 +134,11 @@
   .price-block{
     max-width:1000px;
     margin:22px auto 0;
-    padding:16px;
+    padding:18px;
     background:var(--white);
     border-radius:16px;
     box-shadow:var(--shadow);
+    border-left:5px solid var(--lime);
     display:flex;
     align-items:baseline;
     gap:14px;
@@ -161,7 +150,7 @@
     font-size:16px;
   }
   .price-block .new{
-    font-size:30px;
+    font-size:32px;
     font-weight:800;
     color:var(--green-700);
   }
@@ -173,6 +162,74 @@
     padding:4px 10px;
     border-radius:20px;
   }
+
+  /* ---------- COUNTDOWN ---------- */
+  .countdown-wrap{
+    max-width:1000px;
+    margin:10px auto 0;
+    padding:0 16px;
+  }
+  .countdown-wrap .box{
+    background:var(--green-900);
+    color:var(--white);
+    border-radius:14px;
+    padding:10px 16px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    font-size:13px;
+    font-weight:700;
+    flex-wrap:wrap;
+  }
+  .countdown-wrap .clock{
+    display:flex;
+    gap:6px;
+  }
+  .countdown-wrap .clock span{
+    background:var(--lime);
+    color:var(--green-900);
+    border-radius:8px;
+    padding:4px 8px;
+    font-size:15px;
+    font-weight:800;
+    min-width:30px;
+    text-align:center;
+  }
+
+  /* ---------- SOCIAL PROOF TOAST ---------- */
+  .proof-toast{
+    position:fixed;
+    left:14px;
+    bottom:90px;
+    max-width:280px;
+    background:var(--white);
+    color:var(--green-900);
+    border-radius:14px;
+    box-shadow:0 10px 26px rgba(11,46,31,0.25);
+    padding:10px 14px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:12.5px;
+    font-weight:600;
+    z-index:998;
+    transform:translateY(20px);
+    opacity:0;
+    transition:transform .4s ease, opacity .4s ease;
+    pointer-events:none;
+  }
+  .proof-toast.show{
+    transform:translateY(0);
+    opacity:1;
+  }
+  .proof-toast .dot{
+    width:9px;height:9px;border-radius:50%;
+    background:#2ea856;
+    flex-shrink:0;
+    box-shadow:0 0 0 4px rgba(46,168,86,0.2);
+  }
+  .proof-toast b{color:var(--green-700);}
 
   /* ---------- TRUST ROW ---------- */
   .trust-row{
@@ -595,9 +652,6 @@
   <img src="https://cdn.shopify.com/s/files/1/0770/7197/4592/files/WhatsApp_Image_2026-07-14_at_16.28.12_1.jpg?v=1784039670" alt="Logo boutique">
 </div>
 
-<header class="topbar">
-</header>
-
 <section class="gallery">
   <div class="gallery-main" id="galleryMain">
     <div class="slide"><img src="https://wedinery.com/cdn/shop/files/1_29aec555-f9a2-422a-aa5b-2069a9859613.png?v=1758771316&width=1946" alt="Lampe solaire à pince - vue 1"></div>
@@ -625,6 +679,15 @@
   <span class="new">3 500 FCFA</span>
   <span class="old">8 000 FCFA</span>
   <span class="badge-discount">-56% aujourd'hui</span>
+</div>
+
+<div class="countdown-wrap">
+  <div class="box">
+    ⏳ Offre se termine dans
+    <div class="clock">
+      <span id="cdH">00</span>:<span id="cdM">00</span>:<span id="cdS">00</span>
+    </div>
+  </div>
 </div>
 
 <div class="trust-row">
@@ -700,6 +763,11 @@
 <footer class="site-footer">
   © 2026 — Tous droits réservés. Les marques citées appartiennent à leurs propriétaires respectifs.
 </footer>
+
+<div class="proof-toast" id="proofToast">
+  <span class="dot"></span>
+  <span id="proofText"><b>Awa</b> vient de commander à Cotonou</span>
+</div>
 
 <!-- ================= BARRE FIXE (barre compacte + formulaire dépliable) ================= -->
 <div class="order-fixed" id="orderFixed">
@@ -819,6 +887,51 @@
   }
   bundleOptions.addEventListener('change', updateSelectedStyle);
   updateSelectedStyle();
+
+  // Compte à rebours de l'offre (se réinitialise sur 2h une fois écoulé, pour rester toujours actif)
+  (function(){
+    const key = 'promoEndTime';
+    let end = parseInt(sessionStorage?.getItem?.(key) || '0', 10);
+    const twoHours = 2*60*60*1000;
+    if(!end || end < Date.now()){
+      end = Date.now() + twoHours;
+      try{ sessionStorage.setItem(key, end); }catch(e){}
+    }
+    const h = document.getElementById('cdH');
+    const m = document.getElementById('cdM');
+    const s = document.getElementById('cdS');
+    if(!h) return;
+    function tick(){
+      let diff = end - Date.now();
+      if(diff <= 0){ end = Date.now() + twoHours; try{ sessionStorage.setItem(key, end); }catch(e){} diff = twoHours; }
+      const hh = Math.floor(diff/3600000);
+      const mm = Math.floor((diff%3600000)/60000);
+      const ss = Math.floor((diff%60000)/1000);
+      h.textContent = String(hh).padStart(2,'0');
+      m.textContent = String(mm).padStart(2,'0');
+      s.textContent = String(ss).padStart(2,'0');
+    }
+    tick();
+    setInterval(tick, 1000);
+  })();
+
+  // Notifications de commandes récentes (preuve sociale) pour motiver l'achat
+  (function(){
+    const toast = document.getElementById('proofToast');
+    const textEl = document.getElementById('proofText');
+    if(!toast) return;
+    const prenoms = ['Awa','Kossi','Fatima','Bilal','Chantal','Prince','Nadège','Yves','Aïcha','Junior'];
+    const villes = ['Cotonou','Porto-Novo','Parakou','Abomey-Calavi','Lomé','Abidjan','Ouagadougou'];
+    function showToast(){
+      const prenom = prenoms[Math.floor(Math.random()*prenoms.length)];
+      const ville = villes[Math.floor(Math.random()*villes.length)];
+      textEl.innerHTML = `<b>${prenom}</b> vient de commander à ${ville}`;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 4200);
+    }
+    setTimeout(showToast, 3000);
+    setInterval(showToast, 12000);
+  })();
 
   // Décompte de stock fictif : décrémente occasionnellement pour renforcer l'urgence
   (function(){
