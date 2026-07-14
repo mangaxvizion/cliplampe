@@ -309,6 +309,45 @@
     font-weight:600;
   }
 
+  /* ---------- VIDEO TEST CONDITIONS RÉELLES ---------- */
+  .video-real{
+    margin-top:22px;
+    background:var(--white);
+    border-radius:16px;
+    box-shadow:var(--shadow);
+    padding:16px;
+    border:2px solid var(--lime);
+  }
+  .video-real h3{
+    font-size:17px;
+    color:var(--green-800);
+    margin-bottom:4px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .video-real .video-sub{
+    font-size:13.5px;
+    color:var(--gray-600);
+    margin-bottom:12px;
+    font-weight:600;
+  }
+  .video-real .video-frame{
+    position:relative;
+    width:100%;
+    padding-top:56.25%;
+    border-radius:12px;
+    overflow:hidden;
+    background:#000;
+  }
+  .video-real .video-frame iframe{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    border:0;
+  }
+
   /* ---------- STOCK COUNTER ---------- */
   .stock-alert{
     max-width:1000px;
@@ -706,6 +745,14 @@
       <span class="caption">Éclairage automatique dès qu'un mouvement est détecté</span>
     </li>
   </ul>
+
+  <div class="video-real">
+    <h3>🎥 Vidéo test de la lampe en conditions réelles</h3>
+    <p class="video-sub">Découvrez comment elle illumine instantanément une chambre totalement plongée dans le noir.</p>
+    <div class="video-frame">
+      <iframe src="https://drive.google.com/file/d/1GrpV3sPPsUc8_BAfzl6DHvyvPqGhiu2k/preview" allow="autoplay" allowfullscreen loading="lazy"></iframe>
+    </div>
+  </div>
 </section>
 
 <section class="section">
