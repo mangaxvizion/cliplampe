@@ -40,15 +40,27 @@
   }
   header.topbar span{color:var(--lime);}
 
+  /* ---------- LOGO BAR ---------- */
+  .logo-bar{
+    background:var(--white);
+    text-align:center;
+    padding:10px 14px 8px;
+  }
+  .logo-bar img{
+    height:44px;
+    max-width:80%;
+    object-fit:contain;
+  }
+
   /* ---------- BANDE DÉFILANTE ---------- */
   .marquee-bar{
     background:var(--green-900);
     color:var(--lime);
     overflow:hidden;
     white-space:nowrap;
-    padding:7px 0;
-    font-size:13px;
-    font-weight:700;
+    padding:11px 0;
+    font-size:17px;
+    font-weight:800;
   }
   .marquee-bar .marquee-track{
     display:inline-flex;
@@ -91,12 +103,21 @@
   }
   .gallery-main{
     width:100%;
+    display:flex;
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    -webkit-overflow-scrolling:touch;
     border-radius:18px;
-    overflow:hidden;
     box-shadow:var(--shadow);
     background:var(--white);
+    scrollbar-width:none;
   }
-  .gallery-main img{
+  .gallery-main::-webkit-scrollbar{display:none;}
+  .gallery-main .slide{
+    flex:0 0 100%;
+    scroll-snap-align:center;
+  }
+  .gallery-main .slide img{
     width:100%;
     display:block;
     aspect-ratio:1/1;
@@ -186,6 +207,39 @@
     margin-bottom:14px;
     border-left:5px solid var(--lime);
     padding-left:10px;
+  }
+
+  /* ---------- ANIMATED BADGES ---------- */
+  .anim-badges{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-bottom:16px;
+  }
+  .anim-badges .badge-chip{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    background:var(--green-700);
+    color:var(--white);
+    font-weight:700;
+    font-size:13.5px;
+    padding:9px 14px;
+    border-radius:30px;
+    opacity:0;
+    transform:translateY(14px);
+    animation:badge-in .6s ease forwards, badge-pulse 2.4s ease-in-out infinite;
+  }
+  .anim-badges .badge-chip:nth-child(1){animation-delay:.05s, 1.2s;}
+  .anim-badges .badge-chip:nth-child(2){animation-delay:.25s, 1.5s;}
+  .anim-badges .badge-chip:nth-child(3){animation-delay:.45s, 1.8s;}
+  .anim-badges .badge-chip:nth-child(4){animation-delay:.65s, 2.1s;background:var(--lime);color:var(--green-900);}
+  @keyframes badge-in{
+    to{opacity:1;transform:translateY(0);}
+  }
+  @keyframes badge-pulse{
+    0%,100%{transform:scale(1);}
+    50%{transform:scale(1.05);}
   }
 
   /* ---------- FEATURES ---------- */
@@ -359,6 +413,9 @@
     margin:0 auto;
     padding:10px 14px;
   }
+  .compact-bar.hidden{
+    display:none;
+  }
   .compact-bar .compact-info{
     display:flex;
     flex-direction:column;
@@ -523,10 +580,6 @@
 </head>
 <body>
 
-<header class="topbar">
-  📧 Service-client@boutique-verte.com — <span>Livraison rapide partout au pays 🚚</span>
-</header>
-
 <div class="marquee-bar">
   <div class="marquee-track">
     <span>🚚 <b>Livraison express</b></span>
@@ -538,30 +591,40 @@
   </div>
 </div>
 
-<main class="hero">
-  <h1>🌿 Lampe Solaire à Pince avec Détecteur de Mouvement</h1>
-  <p class="sub">Idéale pour votre jardin, votre balcon et votre terrasse ! 🏡✨ — 2 achetées, 1 offerte !</p>
-</main>
+<div class="logo-bar">
+  <img src="https://cdn.shopify.com/s/files/1/0770/7197/4592/files/WhatsApp_Image_2026-07-14_at_16.28.12_1.jpg?v=1784039670" alt="Logo boutique">
+</div>
+
+<header class="topbar">
+  📧 Service-client@boutique-verte.com — <span>Livraison rapide partout au pays 🚚</span>
+</header>
 
 <section class="gallery">
-  <div class="gallery-main">
-    <img id="mainImage" src="https://wedinery.com/cdn/shop/files/1_29aec555-f9a2-422a-aa5b-2069a9859613.png?v=1758771316&width=1946" alt="Lampe solaire à pince">
+  <div class="gallery-main" id="galleryMain">
+    <div class="slide"><img src="https://wedinery.com/cdn/shop/files/1_29aec555-f9a2-422a-aa5b-2069a9859613.png?v=1758771316&width=1946" alt="Lampe solaire à pince - vue 1"></div>
+    <div class="slide"><img src="https://wedinery.com/cdn/shop/files/2_4edc57c5-d955-4384-ac09-8d85d1b1cf00.png?v=1758771150&width=1946" alt="Lampe solaire à pince - vue 2"></div>
+    <div class="slide"><img src="https://wedinery.com/cdn/shop/files/3_ec43a070-776e-4ac8-a881-b8bde8506dda.png?v=1758771151&width=1946" alt="Lampe solaire à pince - vue 3"></div>
+    <div class="slide"><img src="https://wedinery.com/cdn/shop/files/4_35f697fb-73b8-4aa1-9535-9860834cdfaf.png?v=1758771430&width=1946" alt="Lampe solaire à pince - vue 4"></div>
+    <div class="slide"><img src="https://wedinery.com/cdn/shop/files/5_30618897-bc32-4024-a109-59077e40374e.png?v=1758771151&width=1946" alt="Lampe solaire à pince - vue 5"></div>
+    <div class="slide"><img src="https://wedinery.com/cdn/shop/files/6_6a56a6b7-6e3e-439f-83d6-685b6e863d70.png?v=1758771151&width=1946" alt="Lampe solaire à pince - vue 6"></div>
+    <div class="slide"><img src="https://wedinery.com/cdn/shop/files/7_ec24fef0-8ff2-4f18-a89e-c505874e43d8.png?v=1758771151&width=1946" alt="Lampe solaire à pince - vue 7"></div>
+    <div class="slide"><img src="https://wedinery.com/cdn/shop/files/8_bb1fd05b-bcc5-456c-b232-6c0fbcd97682.png?v=1758771430&width=1946" alt="Lampe solaire à pince - vue 8"></div>
   </div>
   <div class="thumbs" id="thumbs">
-    <img class="active" src="https://wedinery.com/cdn/shop/files/1_29aec555-f9a2-422a-aa5b-2069a9859613.png?v=1758771316&width=416" alt="miniature 1">
-    <img src="https://wedinery.com/cdn/shop/files/2_4edc57c5-d955-4384-ac09-8d85d1b1cf00.png?v=1758771150&width=416" alt="miniature 2">
-    <img src="https://wedinery.com/cdn/shop/files/3_ec43a070-776e-4ac8-a881-b8bde8506dda.png?v=1758771151&width=416" alt="miniature 3">
-    <img src="https://wedinery.com/cdn/shop/files/4_35f697fb-73b8-4aa1-9535-9860834cdfaf.png?v=1758771430&width=416" alt="miniature 4">
-    <img src="https://wedinery.com/cdn/shop/files/5_30618897-bc32-4024-a109-59077e40374e.png?v=1758771151&width=416" alt="miniature 5">
-    <img src="https://wedinery.com/cdn/shop/files/6_6a56a6b7-6e3e-439f-83d6-685b6e863d70.png?v=1758771151&width=416" alt="miniature 6">
-    <img src="https://wedinery.com/cdn/shop/files/7_ec24fef0-8ff2-4f18-a89e-c505874e43d8.png?v=1758771151&width=416" alt="miniature 7">
-    <img src="https://wedinery.com/cdn/shop/files/8_bb1fd05b-bcc5-456c-b232-6c0fbcd97682.png?v=1758771430&width=416" alt="miniature 8">
+    <img class="active" data-index="0" src="https://wedinery.com/cdn/shop/files/1_29aec555-f9a2-422a-aa5b-2069a9859613.png?v=1758771316&width=416" alt="miniature 1">
+    <img data-index="1" src="https://wedinery.com/cdn/shop/files/2_4edc57c5-d955-4384-ac09-8d85d1b1cf00.png?v=1758771150&width=416" alt="miniature 2">
+    <img data-index="2" src="https://wedinery.com/cdn/shop/files/3_ec43a070-776e-4ac8-a881-b8bde8506dda.png?v=1758771151&width=416" alt="miniature 3">
+    <img data-index="3" src="https://wedinery.com/cdn/shop/files/4_35f697fb-73b8-4aa1-9535-9860834cdfaf.png?v=1758771430&width=416" alt="miniature 4">
+    <img data-index="4" src="https://wedinery.com/cdn/shop/files/5_30618897-bc32-4024-a109-59077e40374e.png?v=1758771151&width=416" alt="miniature 5">
+    <img data-index="5" src="https://wedinery.com/cdn/shop/files/6_6a56a6b7-6e3e-439f-83d6-685b6e863d70.png?v=1758771151&width=416" alt="miniature 6">
+    <img data-index="6" src="https://wedinery.com/cdn/shop/files/7_ec24fef0-8ff2-4f18-a89e-c505874e43d8.png?v=1758771151&width=416" alt="miniature 7">
+    <img data-index="7" src="https://wedinery.com/cdn/shop/files/8_bb1fd05b-bcc5-456c-b232-6c0fbcd97682.png?v=1758771430&width=416" alt="miniature 8">
   </div>
 </section>
 
 <div class="price-block">
-  <span class="new">6 000 FCFA</span>
-  <span class="old">14 000 FCFA</span>
+  <span class="new">3 500 FCFA</span>
+  <span class="old">8 000 FCFA</span>
   <span class="badge-discount">-56% aujourd'hui</span>
 </div>
 
@@ -581,40 +644,39 @@
   <div class="bundle-preview">
     <div class="b">
       <div class="qty">1 Lampe</div>
-      <div class="prix">6 000 F</div>
+      <div class="prix">3 500 F</div>
       <div class="unit">Prix unitaire</div>
     </div>
     <div class="b best">
       <div class="qty">3 Lampes</div>
-      <div class="prix">15 000 F</div>
-      <div class="unit">Soit 5 000 F/pièce</div>
+      <div class="prix">9 000 F</div>
+      <div class="unit">Soit 3 000 F/pièce</div>
     </div>
     <div class="b">
       <div class="qty">6 Lampes</div>
-      <div class="prix">25 000 F</div>
-      <div class="unit">Soit ~4 166 F/pièce</div>
+      <div class="prix">15 000 F</div>
+      <div class="unit">Soit 2 500 F/pièce</div>
     </div>
   </div>
 </section>
 
 <section class="section">
   <h2>Description du produit</h2>
+  <div class="anim-badges">
+    <span class="badge-chip">🔋 Autonomie 24h</span>
+    <span class="badge-chip">💧 Imperméable</span>
+    <span class="badge-chip">🛡️ Résistant</span>
+    <span class="badge-chip">⭐ +4690 clients satisfaits</span>
+  </div>
   <ul class="features">
-    <li>Détecteur de mouvement intégré : la lampe s'allume automatiquement dès qu'un mouvement est détecté, pour plus de sécurité autour de la maison.</li>
-    <li>Pince robuste et orientable : se fixe facilement sur une clôture, un pot de fleurs, un rebord de terrasse ou un arbre, sans perçage ni câble.</li>
     <li class="feature-media">
       <img src="https://cdn.shopify.com/s/files/1/0770/7197/4592/files/17587706158986.gif?v=1784043639" alt="Démonstration de fixation de la lampe solaire à pince" loading="lazy">
       <span class="caption">Fixation rapide en pince, sans outil ni perçage</span>
     </li>
-    <li>Alimentation 100% solaire : se recharge dans la journée grâce à son panneau solaire intégré et éclaire toute la nuit, sans consommer d'électricité.</li>
-    <li>Résistante aux intempéries : conçue pour rester à l'extérieur toute l'année, pluie ou soleil.</li>
     <li class="feature-media">
       <img src="https://cdn.shopify.com/s/files/1/0770/7197/4592/files/17587706407142.gif?v=1784044325" alt="Démonstration du détecteur de mouvement de la lampe solaire" loading="lazy">
       <span class="caption">Éclairage automatique dès qu'un mouvement est détecté</span>
     </li>
-    <li>Installation en 2 minutes : aucun outil nécessaire, aucun raccordement électrique.</li>
-    <li>Offre spéciale en cours : 2 lampes achetées, 1 lampe offerte sur le pack de 3.</li>
-    <li>Satisfait ou remboursé sous 30 jours.</li>
   </ul>
 </section>
 
@@ -649,22 +711,22 @@
       <div class="form-title">📝 Passer commande — Livraison rapide</div>
 
       <div class="bundle-options" id="bundleOptions">
-        <input type="radio" name="bundle" id="b1" value="1" data-price="6000" checked>
+        <input type="radio" name="bundle" id="b1" value="1" data-price="3500" checked>
         <label for="b1" class="selected">
           <span class="qty">1 Lampe</span>
-          <span class="prix">6 000 F</span>
+          <span class="prix">3 500 F</span>
         </label>
 
-        <input type="radio" name="bundle" id="b3" value="3" data-price="15000">
+        <input type="radio" name="bundle" id="b3" value="3" data-price="9000">
         <label for="b3">
           <span class="qty">3 Lampes</span>
-          <span class="prix">15 000 F</span>
+          <span class="prix">9 000 F</span>
         </label>
 
-        <input type="radio" name="bundle" id="b6" value="6" data-price="25000">
+        <input type="radio" name="bundle" id="b6" value="6" data-price="15000">
         <label for="b6">
           <span class="qty">6 Lampes</span>
-          <span class="prix">25 000 F</span>
+          <span class="prix">15 000 F</span>
         </label>
       </div>
 
@@ -689,7 +751,7 @@
 
       <div class="total-line">
         <span>Total à payer :</span>
-        <span class="amount" id="totalAmount">6 000 FCFA</span>
+        <span class="amount" id="totalAmount">3 500 FCFA</span>
       </div>
 
       <button type="submit" class="btn-order">🛒 Obtenir maintenant</button>
@@ -699,7 +761,7 @@
   <div class="compact-bar" id="compactBar">
     <div class="compact-info">
       <span class="compact-label">Total</span>
-      <span class="compact-price" id="compactPrice">6 000 FCFA</span>
+      <span class="compact-price" id="compactPrice">3 500 FCFA</span>
     </div>
     <button type="button" class="btn-order" id="quickOrderBtn">🛒 Obtenir maintenant</button>
   </div>
@@ -728,11 +790,13 @@
 
   function openPanel(){
     formPanel.classList.remove('closed');
+    compactBar.classList.add('hidden');
     syncBottomSpace();
     document.getElementById('nom').focus({preventScroll:true});
   }
   function closePanel(){
     formPanel.classList.add('closed');
+    compactBar.classList.remove('hidden');
     syncBottomSpace();
   }
 
@@ -770,14 +834,48 @@
     }, 45000);
   })();
 
-  // Galerie : clic sur miniature -> change l'image principale
-  document.querySelectorAll('#thumbs img').forEach(thumb => {
+  // Galerie défilante : clic sur miniature -> fait défiler jusqu'à l'image correspondante
+  const galleryMain = document.getElementById('galleryMain');
+  const slides = galleryMain ? galleryMain.querySelectorAll('.slide') : [];
+  const thumbImgs = document.querySelectorAll('#thumbs img');
+
+  thumbImgs.forEach(thumb => {
     thumb.addEventListener('click', () => {
-      document.getElementById('mainImage').src = thumb.src.replace('width=416','width=1946');
-      document.querySelectorAll('#thumbs img').forEach(t => t.classList.remove('active'));
+      const idx = parseInt(thumb.dataset.index, 10);
+      if(slides[idx]){
+        slides[idx].scrollIntoView({behavior:'smooth', inline:'center', block:'nearest'});
+      }
+      thumbImgs.forEach(t => t.classList.remove('active'));
       thumb.classList.add('active');
     });
   });
+
+  // Met à jour la miniature active pendant le défilement manuel des images
+  if(galleryMain && slides.length){
+    let scrollTimeout;
+    galleryMain.addEventListener('scroll', () => {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        const center = galleryMain.scrollLeft + galleryMain.clientWidth / 2;
+        let closestIdx = 0, closestDist = Infinity;
+        slides.forEach((slide, i) => {
+          const dist = Math.abs((slide.offsetLeft + slide.clientWidth / 2) - center);
+          if(dist < closestDist){ closestDist = dist; closestIdx = i; }
+        });
+        thumbImgs.forEach(t => t.classList.remove('active'));
+        if(thumbImgs[closestIdx]) thumbImgs[closestIdx].classList.add('active');
+      }, 100);
+    });
+
+    // Défilement automatique doux des images produit
+    let autoIdx = 0;
+    let autoScroll = setInterval(() => {
+      autoIdx = (autoIdx + 1) % slides.length;
+      slides[autoIdx].scrollIntoView({behavior:'smooth', inline:'center', block:'nearest'});
+    }, 3500);
+    galleryMain.addEventListener('touchstart', () => clearInterval(autoScroll));
+    galleryMain.addEventListener('mousedown', () => clearInterval(autoScroll));
+  }
 
   // Soumission -> validation + envoi WhatsApp
   document.getElementById('orderForm').addEventListener('submit', function(e){
