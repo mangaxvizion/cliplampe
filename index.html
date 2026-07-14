@@ -25,7 +25,7 @@
     font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
     background:var(--cream);
     color:var(--green-900);
-    padding-bottom:340px; /* espace pour le formulaire fixe */
+    padding-bottom:76px; /* recalculé dynamiquement en JS selon la hauteur réelle de la barre fixe */
   }
 
   /* ---------- HEADER ---------- */
@@ -39,6 +39,31 @@
     letter-spacing:.3px;
   }
   header.topbar span{color:var(--lime);}
+
+  /* ---------- BANDE DÉFILANTE ---------- */
+  .marquee-bar{
+    background:var(--green-900);
+    color:var(--lime);
+    overflow:hidden;
+    white-space:nowrap;
+    padding:7px 0;
+    font-size:13px;
+    font-weight:700;
+  }
+  .marquee-bar .marquee-track{
+    display:inline-flex;
+    width:max-content;
+    animation:scroll-marquee 18s linear infinite;
+  }
+  .marquee-bar .marquee-track span{
+    padding:0 28px;
+    color:var(--cream);
+  }
+  .marquee-bar .marquee-track span b{color:var(--lime);}
+  @keyframes scroll-marquee{
+    0%{transform:translateX(0);}
+    100%{transform:translateX(-50%);}
+  }
 
   .hero{
     max-width:1000px;
@@ -186,6 +211,57 @@
     font-weight:900;
     flex-shrink:0;
   }
+  .features li.feature-media{
+    flex-direction:column;
+    align-items:stretch;
+    padding:10px;
+  }
+  .features li.feature-media::before{
+    display:none;
+  }
+  .features li.feature-media img{
+    width:100%;
+    border-radius:10px;
+    display:block;
+  }
+  .features li.feature-media span.caption{
+    font-size:13px;
+    color:var(--gray-600);
+    text-align:center;
+    margin-top:8px;
+    font-weight:600;
+  }
+
+  /* ---------- STOCK COUNTER ---------- */
+  .stock-alert{
+    max-width:1000px;
+    margin:16px auto 0;
+    padding:0 16px;
+  }
+  .stock-alert .box{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    background:#fdeceb;
+    border:1.5px solid #e0564a;
+    color:#b3261e;
+    font-weight:800;
+    font-size:14px;
+    border-radius:12px;
+    padding:10px 14px;
+    animation:pulse-stock 1.3s ease-in-out infinite;
+  }
+  @keyframes pulse-stock{
+    0%,100%{
+      box-shadow:0 0 0 0 rgba(179,38,30,.35);
+      transform:scale(1);
+    }
+    50%{
+      box-shadow:0 0 0 8px rgba(179,38,30,0);
+      transform:scale(1.02);
+    }
+  }
 
   /* ---------- WHY US ---------- */
   .why-grid{
@@ -244,7 +320,7 @@
   .bundle-preview .prix{font-size:19px;font-weight:800;color:var(--green-700);}
   .bundle-preview .unit{font-size:11px;color:var(--gray-600);}
 
-  /* ---------- STICKY ORDER FORM ---------- */
+  /* ---------- STICKY ORDER BAR ---------- */
   .order-fixed{
     position:fixed;
     bottom:0;left:0;right:0;
@@ -252,8 +328,16 @@
     border-top:3px solid var(--green-600);
     box-shadow:0 -8px 24px rgba(11,46,31,0.2);
     z-index:999;
-    max-height:70vh;
+    display:flex;
+    flex-direction:column;
+  }
+  .order-fixed .form-panel{
+    max-height:60vh;
     overflow-y:auto;
+    border-bottom:1px solid #e3ece4;
+  }
+  .order-fixed .form-panel.closed{
+    display:none;
   }
   .order-fixed .handle{
     text-align:center;
@@ -263,6 +347,39 @@
     cursor:pointer;
     user-select:none;
   }
+
+  /* ---------- COMPACT BAR (toujours visible, type EasySell) ---------- */
+  .compact-bar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    max-width:1000px;
+    width:100%;
+    margin:0 auto;
+    padding:10px 14px;
+  }
+  .compact-bar .compact-info{
+    display:flex;
+    flex-direction:column;
+    line-height:1.15;
+    flex-shrink:0;
+  }
+  .compact-bar .compact-label{
+    font-size:11px;
+    color:var(--gray-600);
+    font-weight:600;
+  }
+  .compact-bar .compact-price{
+    font-size:20px;
+    font-weight:800;
+    color:var(--green-700);
+  }
+  .compact-bar .btn-order{
+    flex:1;
+    max-width:260px;
+  }
+
   .order-fixed form{
     max-width:1000px;
     margin:0 auto;
@@ -359,19 +476,27 @@
     align-items:center;
     justify-content:center;
     gap:8px;
-    animation:blink-btn 1.4s infinite;
+    animation:bounce-btn 1.8s ease infinite;
+    transform-origin:center bottom;
   }
   .btn-order:hover{background:var(--green-700);}
 
-  @keyframes blink-btn{
-    0%,100%{
-      background:var(--green-600);
-      box-shadow:0 0 0 0 rgba(46,168,86,.55);
+  @keyframes bounce-btn{
+    0%,20%,50%,80%,100%{
+      transform:translateY(0);
+      box-shadow:0 6px 14px rgba(11,46,31,.25);
     }
-    50%{
-      background:var(--lime);
-      color:var(--green-900);
-      box-shadow:0 0 0 10px rgba(46,168,86,0);
+    10%{
+      transform:translateY(-14px);
+      box-shadow:0 20px 20px rgba(11,46,31,.15);
+    }
+    40%{
+      transform:translateY(-7px);
+      box-shadow:0 14px 16px rgba(11,46,31,.2);
+    }
+    65%{
+      transform:translateY(-3px);
+      box-shadow:0 10px 14px rgba(11,46,31,.22);
     }
   }
 
@@ -393,15 +518,25 @@
   @media (max-width:560px){
     .trust-row{grid-template-columns:repeat(2,1fr);}
     .form-grid{grid-template-columns:1fr;}
-    body{padding-bottom:420px;}
   }
 </style>
 </head>
 <body>
 
 <header class="topbar">
-  📧 Service@wedinery-style.com — <span>Livraison rapide partout au pays 🚚</span>
+  📧 Service-client@boutique-verte.com — <span>Livraison rapide partout au pays 🚚</span>
 </header>
+
+<div class="marquee-bar">
+  <div class="marquee-track">
+    <span>🚚 <b>Livraison express</b></span>
+    <span>💵 <b>Paiement à la livraison</b></span>
+    <span>🎉 <b>Fête des prix tout le mois de juillet</b></span>
+    <span>🚚 <b>Livraison express</b></span>
+    <span>💵 <b>Paiement à la livraison</b></span>
+    <span>🎉 <b>Fête des prix tout le mois de juillet</b></span>
+  </div>
+</div>
 
 <main class="hero">
   <h1>🌿 Lampe Solaire à Pince avec Détecteur de Mouvement</h1>
@@ -437,6 +572,10 @@
   <div class="item"><span class="icon">↩️</span>Retour 30 jours</div>
 </div>
 
+<div class="stock-alert">
+  <div class="box">⏰ Plus que <span id="stockCount">5</span> pièces disponibles — Stock limité !</div>
+</div>
+
 <section class="section" id="offres">
   <h2>Nos offres</h2>
   <div class="bundle-preview">
@@ -463,8 +602,16 @@
   <ul class="features">
     <li>Détecteur de mouvement intégré : la lampe s'allume automatiquement dès qu'un mouvement est détecté, pour plus de sécurité autour de la maison.</li>
     <li>Pince robuste et orientable : se fixe facilement sur une clôture, un pot de fleurs, un rebord de terrasse ou un arbre, sans perçage ni câble.</li>
+    <li class="feature-media">
+      <img src="https://cdn.shopify.com/s/files/1/0770/7197/4592/files/17587706158986.gif?v=1784043639" alt="Démonstration de fixation de la lampe solaire à pince" loading="lazy">
+      <span class="caption">Fixation rapide en pince, sans outil ni perçage</span>
+    </li>
     <li>Alimentation 100% solaire : se recharge dans la journée grâce à son panneau solaire intégré et éclaire toute la nuit, sans consommer d'électricité.</li>
     <li>Résistante aux intempéries : conçue pour rester à l'extérieur toute l'année, pluie ou soleil.</li>
+    <li class="feature-media">
+      <img src="https://cdn.shopify.com/s/files/1/0770/7197/4592/files/17587706407142.gif?v=1784044325" alt="Démonstration du détecteur de mouvement de la lampe solaire" loading="lazy">
+      <span class="caption">Éclairage automatique dès qu'un mouvement est détecté</span>
+    </li>
     <li>Installation en 2 minutes : aucun outil nécessaire, aucun raccordement électrique.</li>
     <li>Offre spéciale en cours : 2 lampes achetées, 1 lampe offerte sur le pack de 3.</li>
     <li>Satisfait ou remboursé sous 30 jours.</li>
@@ -493,58 +640,70 @@
   © 2026 — Tous droits réservés. Les marques citées appartiennent à leurs propriétaires respectifs.
 </footer>
 
-<!-- ================= FORMULAIRE FIXE ================= -->
-<div class="order-fixed">
-  <div class="handle" id="dragHandle">▲ Formulaire de commande ▲</div>
-  <form id="orderForm">
-    <div class="form-title">📝 Passer commande — Livraison rapide</div>
+<!-- ================= BARRE FIXE (barre compacte + formulaire dépliable) ================= -->
+<div class="order-fixed" id="orderFixed">
 
-    <div class="bundle-options" id="bundleOptions">
-      <input type="radio" name="bundle" id="b1" value="1" data-price="6000" checked>
-      <label for="b1" class="selected">
-        <span class="qty">1 Lampe</span>
-        <span class="prix">6 000 F</span>
-      </label>
+  <div class="form-panel closed" id="formPanel">
+    <div class="handle" id="dragHandle">▼ Fermer ▼</div>
+    <form id="orderForm">
+      <div class="form-title">📝 Passer commande — Livraison rapide</div>
 
-      <input type="radio" name="bundle" id="b3" value="3" data-price="15000">
-      <label for="b3">
-        <span class="qty">3 Lampes</span>
-        <span class="prix">15 000 F</span>
-      </label>
+      <div class="bundle-options" id="bundleOptions">
+        <input type="radio" name="bundle" id="b1" value="1" data-price="6000" checked>
+        <label for="b1" class="selected">
+          <span class="qty">1 Lampe</span>
+          <span class="prix">6 000 F</span>
+        </label>
 
-      <input type="radio" name="bundle" id="b6" value="6" data-price="25000">
-      <label for="b6">
-        <span class="qty">6 Lampes</span>
-        <span class="prix">25 000 F</span>
-      </label>
+        <input type="radio" name="bundle" id="b3" value="3" data-price="15000">
+        <label for="b3">
+          <span class="qty">3 Lampes</span>
+          <span class="prix">15 000 F</span>
+        </label>
+
+        <input type="radio" name="bundle" id="b6" value="6" data-price="25000">
+        <label for="b6">
+          <span class="qty">6 Lampes</span>
+          <span class="prix">25 000 F</span>
+        </label>
+      </div>
+
+      <div class="form-grid">
+        <div>
+          <input type="text" id="nom" placeholder="Nom" required>
+          <div class="error-msg" id="err-nom">Veuillez saisir votre nom.</div>
+        </div>
+        <div>
+          <input type="text" id="prenom" placeholder="Prénom" required>
+          <div class="error-msg" id="err-prenom">Veuillez saisir votre prénom.</div>
+        </div>
+        <div class="full">
+          <input type="tel" id="telephone" placeholder="Numéro de téléphone" required>
+          <div class="error-msg" id="err-tel">Veuillez saisir un numéro valide.</div>
+        </div>
+        <div class="full">
+          <textarea id="adresse" placeholder="Adresse de livraison complète (ville, quartier, repère...)" required></textarea>
+          <div class="error-msg" id="err-adresse">Veuillez saisir votre adresse de livraison.</div>
+        </div>
+      </div>
+
+      <div class="total-line">
+        <span>Total à payer :</span>
+        <span class="amount" id="totalAmount">6 000 FCFA</span>
+      </div>
+
+      <button type="submit" class="btn-order">🛒 Obtenir maintenant</button>
+    </form>
+  </div>
+
+  <div class="compact-bar" id="compactBar">
+    <div class="compact-info">
+      <span class="compact-label">Total</span>
+      <span class="compact-price" id="compactPrice">6 000 FCFA</span>
     </div>
+    <button type="button" class="btn-order" id="quickOrderBtn">🛒 Obtenir maintenant</button>
+  </div>
 
-    <div class="form-grid">
-      <div>
-        <input type="text" id="nom" placeholder="Nom" required>
-        <div class="error-msg" id="err-nom">Veuillez saisir votre nom.</div>
-      </div>
-      <div>
-        <input type="text" id="prenom" placeholder="Prénom" required>
-        <div class="error-msg" id="err-prenom">Veuillez saisir votre prénom.</div>
-      </div>
-      <div class="full">
-        <input type="tel" id="telephone" placeholder="Numéro de téléphone" required>
-        <div class="error-msg" id="err-tel">Veuillez saisir un numéro valide.</div>
-      </div>
-      <div class="full">
-        <textarea id="adresse" placeholder="Adresse de livraison complète (ville, quartier, repère...)" required></textarea>
-        <div class="error-msg" id="err-adresse">Veuillez saisir votre adresse de livraison.</div>
-      </div>
-    </div>
-
-    <div class="total-line">
-      <span>Total à payer :</span>
-      <span class="amount" id="totalAmount">6 000 FCFA</span>
-    </div>
-
-    <button type="submit" class="btn-order">🛒 Commander maintenant via WhatsApp</button>
-  </form>
 </div>
 
 <script>
@@ -552,6 +711,37 @@
 
   const bundleOptions = document.getElementById('bundleOptions');
   const totalAmount = document.getElementById('totalAmount');
+  const compactPrice = document.getElementById('compactPrice');
+  const orderFixed = document.getElementById('orderFixed');
+  const formPanel = document.getElementById('formPanel');
+  const compactBar = document.getElementById('compactBar');
+  const quickOrderBtn = document.getElementById('quickOrderBtn');
+  const dragHandle = document.getElementById('dragHandle');
+
+  // Recalcule l'espace réservé en bas de page selon la hauteur réelle de la barre fixe (supprime tout espace vide)
+  function syncBottomSpace(){
+    document.body.style.paddingBottom = orderFixed.offsetHeight + 'px';
+  }
+  window.addEventListener('resize', syncBottomSpace);
+  window.addEventListener('load', syncBottomSpace);
+  syncBottomSpace();
+
+  function openPanel(){
+    formPanel.classList.remove('closed');
+    syncBottomSpace();
+    document.getElementById('nom').focus({preventScroll:true});
+  }
+  function closePanel(){
+    formPanel.classList.add('closed');
+    syncBottomSpace();
+  }
+
+  quickOrderBtn.addEventListener('click', openPanel);
+  compactBar.addEventListener('click', (e) => {
+    if(e.target === quickOrderBtn) return;
+    openPanel();
+  });
+  dragHandle.addEventListener('click', closePanel);
 
   function updateSelectedStyle(){
     document.querySelectorAll('.bundle-options label').forEach(l => l.classList.remove('selected'));
@@ -559,11 +749,26 @@
     if(checked){
       document.querySelector('label[for="'+checked.id+'"]').classList.add('selected');
       const price = parseInt(checked.dataset.price, 10);
-      totalAmount.textContent = price.toLocaleString('fr-FR') + ' FCFA';
+      const formatted = price.toLocaleString('fr-FR') + ' FCFA';
+      totalAmount.textContent = formatted;
+      compactPrice.textContent = formatted;
     }
   }
   bundleOptions.addEventListener('change', updateSelectedStyle);
   updateSelectedStyle();
+
+  // Décompte de stock fictif : décrémente occasionnellement pour renforcer l'urgence
+  (function(){
+    const stockEl = document.getElementById('stockCount');
+    if(!stockEl) return;
+    let stock = parseInt(stockEl.textContent, 10) || 5;
+    setInterval(() => {
+      if(stock > 2 && Math.random() < 0.5){
+        stock -= 1;
+        stockEl.textContent = stock;
+      }
+    }, 45000);
+  })();
 
   // Galerie : clic sur miniature -> change l'image principale
   document.querySelectorAll('#thumbs img').forEach(thumb => {
@@ -572,12 +777,6 @@
       document.querySelectorAll('#thumbs img').forEach(t => t.classList.remove('active'));
       thumb.classList.add('active');
     });
-  });
-
-  // Ouvrir/fermer le formulaire fixe sur mobile
-  document.getElementById('dragHandle').addEventListener('click', () => {
-    const form = document.getElementById('orderForm');
-    form.style.display = (form.style.display === 'none') ? 'block' : 'none';
   });
 
   // Soumission -> validation + envoi WhatsApp
