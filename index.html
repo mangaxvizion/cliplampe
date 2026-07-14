@@ -197,40 +197,6 @@
     text-align:center;
   }
 
-  /* ---------- SOCIAL PROOF TOAST ---------- */
-  .proof-toast{
-    position:fixed;
-    left:14px;
-    bottom:90px;
-    max-width:280px;
-    background:var(--white);
-    color:var(--green-900);
-    border-radius:14px;
-    box-shadow:0 10px 26px rgba(11,46,31,0.25);
-    padding:10px 14px;
-    display:flex;
-    align-items:center;
-    gap:10px;
-    font-size:12.5px;
-    font-weight:600;
-    z-index:998;
-    transform:translateY(20px);
-    opacity:0;
-    transition:transform .4s ease, opacity .4s ease;
-    pointer-events:none;
-  }
-  .proof-toast.show{
-    transform:translateY(0);
-    opacity:1;
-  }
-  .proof-toast .dot{
-    width:9px;height:9px;border-radius:50%;
-    background:#2ea856;
-    flex-shrink:0;
-    box-shadow:0 0 0 4px rgba(46,168,86,0.2);
-  }
-  .proof-toast b{color:var(--green-700);}
-
   /* ---------- TRUST ROW ---------- */
   .trust-row{
     max-width:1000px;
@@ -764,11 +730,6 @@
   © 2026 — Tous droits réservés. Les marques citées appartiennent à leurs propriétaires respectifs.
 </footer>
 
-<div class="proof-toast" id="proofToast">
-  <span class="dot"></span>
-  <span id="proofText"><b>Awa</b> vient de commander à Cotonou</span>
-</div>
-
 <!-- ================= BARRE FIXE (barre compacte + formulaire dépliable) ================= -->
 <div class="order-fixed" id="orderFixed">
 
@@ -913,24 +874,6 @@
     }
     tick();
     setInterval(tick, 1000);
-  })();
-
-  // Notifications de commandes récentes (preuve sociale) pour motiver l'achat
-  (function(){
-    const toast = document.getElementById('proofToast');
-    const textEl = document.getElementById('proofText');
-    if(!toast) return;
-    const prenoms = ['Awa','Kossi','Fatima','Bilal','Chantal','Prince','Nadège','Yves','Aïcha','Junior'];
-    const villes = ['Cotonou','Porto-Novo','Parakou','Abomey-Calavi','Lomé','Abidjan','Ouagadougou'];
-    function showToast(){
-      const prenom = prenoms[Math.floor(Math.random()*prenoms.length)];
-      const ville = villes[Math.floor(Math.random()*villes.length)];
-      textEl.innerHTML = `<b>${prenom}</b> vient de commander à ${ville}`;
-      toast.classList.add('show');
-      setTimeout(() => toast.classList.remove('show'), 4200);
-    }
-    setTimeout(showToast, 3000);
-    setInterval(showToast, 12000);
   })();
 
   // Décompte de stock fictif : décrémente occasionnellement pour renforcer l'urgence
