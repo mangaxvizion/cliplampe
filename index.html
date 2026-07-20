@@ -197,27 +197,6 @@
     text-align:center;
   }
 
-  /* ---------- TRUST ROW ---------- */
-  .trust-row{
-    max-width:1000px;
-    margin:16px auto 0;
-    padding:0 16px;
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:10px;
-    text-align:center;
-  }
-  .trust-row .item{
-    background:var(--white);
-    border-radius:12px;
-    padding:10px 6px;
-    font-size:12px;
-    font-weight:600;
-    color:var(--green-700);
-    box-shadow:0 2px 8px rgba(11,46,31,0.08);
-  }
-  .trust-row .item .icon{font-size:20px;display:block;margin-bottom:4px;}
-
   /* ---------- SECTION TITLES ---------- */
   .section{
     max-width:1000px;
@@ -596,7 +575,6 @@
   }
 
   @media (max-width:560px){
-    .trust-row{grid-template-columns:repeat(2,1fr);}
     .form-grid{grid-template-columns:1fr;}
   }
 </style>
@@ -642,9 +620,9 @@
 </section>
 
 <div class="price-block">
-  <span class="new">3 500 FCFA</span>
+  <span class="new">4 500 FCFA</span>
   <span class="old">8 000 FCFA</span>
-  <span class="badge-discount">-56% aujourd'hui</span>
+  <span class="badge-discount">-44% aujourd'hui</span>
 </div>
 
 <div class="countdown-wrap">
@@ -656,13 +634,6 @@
   </div>
 </div>
 
-<div class="trust-row">
-  <div class="item"><span class="icon">🚚</span>Livraison rapide</div>
-  <div class="item"><span class="icon">🔒</span>Paiement sécurisé</div>
-  <div class="item"><span class="icon">☎️</span>Service 24/7</div>
-  <div class="item"><span class="icon">↩️</span>Retour 30 jours</div>
-</div>
-
 <div class="stock-alert">
   <div class="box">⏰ Plus que <span id="stockCount">5</span> pièces disponibles — Stock limité !</div>
 </div>
@@ -672,18 +643,18 @@
   <div class="bundle-preview">
     <div class="b">
       <div class="qty">1 Lampe</div>
-      <div class="prix">3 500 F</div>
+      <div class="prix">4 500 F</div>
       <div class="unit">Prix unitaire</div>
     </div>
     <div class="b best">
       <div class="qty">3 Lampes</div>
-      <div class="prix">9 000 F</div>
-      <div class="unit">Soit 3 000 F/pièce</div>
+      <div class="prix">10 000 F</div>
+      <div class="unit">Soit 3 333 F/pièce</div>
     </div>
     <div class="b">
       <div class="qty">6 Lampes</div>
-      <div class="prix">15 000 F</div>
-      <div class="unit">Soit 2 500 F/pièce</div>
+      <div class="prix">18 000 F</div>
+      <div class="unit">Soit 3 000 F/pièce</div>
     </div>
   </div>
 </section>
@@ -739,22 +710,22 @@
       <div class="form-title">📝 Passer commande — Livraison rapide</div>
 
       <div class="bundle-options" id="bundleOptions">
-        <input type="radio" name="bundle" id="b1" value="1" data-price="3500" checked>
+        <input type="radio" name="bundle" id="b1" value="1" data-price="4500" checked>
         <label for="b1" class="selected">
           <span class="qty">1 Lampe</span>
-          <span class="prix">3 500 F</span>
+          <span class="prix">4 500 F</span>
         </label>
 
-        <input type="radio" name="bundle" id="b3" value="3" data-price="9000">
+        <input type="radio" name="bundle" id="b3" value="3" data-price="10000">
         <label for="b3">
           <span class="qty">3 Lampes</span>
-          <span class="prix">9 000 F</span>
+          <span class="prix">10 000 F</span>
         </label>
 
-        <input type="radio" name="bundle" id="b6" value="6" data-price="15000">
+        <input type="radio" name="bundle" id="b6" value="6" data-price="18000">
         <label for="b6">
           <span class="qty">6 Lampes</span>
-          <span class="prix">15 000 F</span>
+          <span class="prix">18 000 F</span>
         </label>
       </div>
 
@@ -779,7 +750,7 @@
 
       <div class="total-line">
         <span>Total à payer :</span>
-        <span class="amount" id="totalAmount">3 500 FCFA</span>
+        <span class="amount" id="totalAmount">4 500 FCFA</span>
       </div>
 
       <button type="submit" class="btn-order">🛒 Obtenir maintenant</button>
@@ -789,7 +760,7 @@
   <div class="compact-bar" id="compactBar">
     <div class="compact-info">
       <span class="compact-label">Total</span>
-      <span class="compact-price" id="compactPrice">3 500 FCFA</span>
+      <span class="compact-price" id="compactPrice">4 500 FCFA</span>
     </div>
     <button type="button" class="btn-order" id="quickOrderBtn">🛒 Obtenir maintenant</button>
   </div>
@@ -797,7 +768,7 @@
 </div>
 
 <script>
-  const WHATSAPP_NUMBER = "2290169777434"; // numéro WhatsApp Business du vendeur
+  const WHATSAPP_NUMBER = "2290166935701"; // numéro WhatsApp Business du vendeur
 
   const bundleOptions = document.getElementById('bundleOptions');
   const totalAmount = document.getElementById('totalAmount');
@@ -921,15 +892,6 @@
         if(thumbImgs[closestIdx]) thumbImgs[closestIdx].classList.add('active');
       }, 100);
     });
-
-    // Défilement automatique doux des images produit
-    let autoIdx = 0;
-    let autoScroll = setInterval(() => {
-      autoIdx = (autoIdx + 1) % slides.length;
-      slides[autoIdx].scrollIntoView({behavior:'smooth', inline:'center', block:'nearest'});
-    }, 3500);
-    galleryMain.addEventListener('touchstart', () => clearInterval(autoScroll));
-    galleryMain.addEventListener('mousedown', () => clearInterval(autoScroll));
   }
 
   // Soumission -> validation + envoi WhatsApp
